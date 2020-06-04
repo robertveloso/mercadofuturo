@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://142.93.120.172:3333',
+  baseURL: 'https://api.mercadofuturo.com',
 });
 
 export const picpay = axios.create({

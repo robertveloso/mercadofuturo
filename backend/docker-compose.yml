@@ -10,6 +10,12 @@ services:
     volumes:
       - .:/home/node/api
     env_file: .env
+    labels:
+      - 'traefik.enable=true' # Enable reverse-proxy for this service
+      - 'traefik.backend=api'
+      - 'traefik.frontend.rule=Host:api.mercado-futuro.com' # Domain name for the app
+      - 'traefik.frontend.priority=1'
+      - 'traefik.port=80'
     environment:
       - DB_HOST=mercado-postgres
       - REDIS_HOST=mercado-redis
@@ -77,3 +83,24 @@ services:
       - 6379
     networks:
       - mercado-network
+
+  traefik:
+    container_name: 'traefik'
+    image: traefik
+    command: --api # Enables the web UI
+    ports:
+      - '80:80/tcp' # The HTTP port
+      - '443:443/tcp' # The HTTPS port
+      #- "8080:8080/tcp" # The web UI
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=Host:monitor.mercado-futuro.com'
+      - 'traefik.backend=traefik'
+      - 'traefik.frontend.priority=1'
+      - 'traefik.port=8080'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+      - ./traefik.toml:/traefik.toml # Traefik configuration file
+      #- ./docker/traefik-acme:/acme # Tell Traefik to save SSL certs here
+    network_mode: bridge
+    restart: always

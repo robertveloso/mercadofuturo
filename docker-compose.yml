@@ -1,0 +1,58 @@
+#version: "3.3"
+version: "2.2"
+
+services:
+  web:
+    container_name: "web"
+    # image: registry.gitlab.com/velosodigital/cidades/web:latest
+    image: docker.pkg.github.com/robertveloso/cidades/web:latest
+    #ports:
+    #- "3000:80"
+    env_file:
+      - ./.env.production
+    labels:
+      - "traefik.enable=true" # Enable reverse-proxy for this service
+      - "traefik.backend=web"
+      - "traefik.frontend.rule=Host:wsl.local, demo.cidadesdigital.com, www.riachodosmachados.mg.gov.br, www.serranopolisdeminas.mg.leg.br, www.matoverde.mg.leg.br, www.gameleiras.mg.leg.br" # Domain name for the app
+      - "traefik.frontend.priority=1"
+      - "traefik.port=80"
+    network_mode: bridge
+    restart: always
+
+  api:
+    container_name: "api"
+    # image: registry.gitlab.com/velosodigital/cidades/api:latest
+    image: docker.pkg.github.com/robertveloso/cidades/api:latest
+    #ports:
+    #- "4000:80"
+    env_file:
+      - ./.env.production
+    labels:
+      - "traefik.enable=true" # Enable reverse-proxy for this service
+      - "traefik.backend=api"
+      - "traefik.frontend.rule=Host:api.mercado-futuro.com" # Domain name for the app
+      - "traefik.frontend.priority=1"
+      - "traefik.port=80"
+    restart: always
+    network_mode: bridge
+
+  traefik:
+    container_name: "traefik"
+    image: traefik
+    command: --api # Enables the web UI
+    ports:
+      - "80:80/tcp" # The HTTP port
+      - "443:443/tcp" # The HTTPS port
+      #- "8080:8080/tcp" # The web UI
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:monitor.mercado-futuro.com"
+      - "traefik.backend=traefik"
+      - "traefik.frontend.priority=1"
+      - "traefik.port=8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+      - ./traefik.toml:/traefik.toml # Traefik configuration file
+      #- ./docker/traefik-acme:/acme # Tell Traefik to save SSL certs here
+    network_mode: bridge
+    restart: always
