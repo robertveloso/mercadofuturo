@@ -41,8 +41,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "react-scripts start",
-    "api": "json-server server.json -p 3333"
+    "start": "react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"
