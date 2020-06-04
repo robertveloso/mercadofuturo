@@ -1,15 +1,6 @@
 import axios from 'axios';
 
 const api = axios.create({
-  headers: {
-    // can be common or any other method
-    Authorization:
-      // COMPANY
-      // 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTkxMjA3NjAyLCJleHAiOjE1OTE4MTI0MDJ9.1KEofiU97pAP_LWFsHg4mII_QT2tYwHU5_REC4O7LCE',
-      // CLIENT
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTkxMjIxNDI2LCJleHAiOjE1OTE4MjYyMjZ9.HAkKTfdjJlXZ_p5OPi_OcNeAg8N8_aXmJg-ra3mbeZo',
-    // 'Accept-Encoding': '*',
-  },
   baseURL: 'http://localhost:3333',
 });
 
