@@ -9,7 +9,7 @@ Helper.buildHost = () => {
   const formatUrl = () =>
     url.format({
       protocol: process.env.PROTOCOL || 'http',
-      hostname: process.env.HOST || '167.99.228.1', //127.0.0.1
+      hostname: process.env.HOST || '127.0.0.1',
       port: process.env.PORT || 3333,
       pathname: '',
     });

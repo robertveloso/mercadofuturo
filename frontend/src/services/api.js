@@ -1,8 +1,13 @@
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: 'https://api.mercadofuturo.com',
-});
+const api =
+  process.env.NODE_ENV !== 'production'
+    ? axios.create({
+        baseURL: 'http://localhost:3333',
+      })
+    : axios.create({
+        baseURL: 'https://api.mercado-futuro.com',
+      });
 
 export const picpay = axios.create({
   headers: {

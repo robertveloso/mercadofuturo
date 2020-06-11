@@ -9,7 +9,7 @@ import { addToCartSuccess, clearCart } from './actions';
 
 import { store } from '../../index';
 
-function* addToCart({ id, month, price, discount, donate }) {
+function* addToCart({ id, date, bonus, price }) {
   const { signed } = store.getState().auth;
   if (!signed) {
     yield put(clearCart());
@@ -17,14 +17,14 @@ function* addToCart({ id, month, price, discount, donate }) {
     return;
   }
   const response = yield call(api.get, `companies/${id}`);
-
+  console.log('robert rocks', id, date, bonus, price);
   const data = {
     ...response.data,
+    company_id: id,
     amount: 1,
-    month,
+    date,
+    bonus,
     price,
-    discount,
-    donate,
     priceFormatted: formatPrice(price),
   };
 

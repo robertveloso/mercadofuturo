@@ -13,6 +13,7 @@ class Order extends Model {
           autoIncrement: false,
         },
         value: Sequelize.FLOAT,
+        payment_url: Sequelize.STRING,
         status: Sequelize.STRING,
         canceled_at: Sequelize.DATE,
       },

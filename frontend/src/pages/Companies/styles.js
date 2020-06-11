@@ -1,11 +1,49 @@
 import styled from 'styled-components';
 import { darken } from 'polished';
 
+import bgImage from '../../assets/images/bg.png';
+import companyBanner from '../../assets/images/company-banner.svg';
+
+export const SectionHeader = styled.h1`
+  font-size: 26px;
+  font-weight: 300;
+  margin: 15px 0 0 100px;
+  color: #666;
+  align-self: flex-start;
+`;
+
+export const CompaniesContainer = styled.div`
+  background: url(${bgImage}) center top no-repeat;
+  width: 100%;
+  height: 700px;
+  background-size: contain;
+
+  & section {
+    justify-content: center;
+    margin: 0 auto;
+    height: 100%;
+  }
+  @media (max-width: 1280px) {
+    height: 90vh;
+  }
+  @media (max-width: 1024px) {
+    background: none;
+    height: auto;
+  }
+`;
+
+export const CompaniesBanner = styled.img.attrs({
+  src: companyBanner,
+})`
+  width: 100%;
+`;
+
 export const ProductList = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-gap: 20px;
   list-style: none;
+  margin: 20px 100px;
 
   li {
     display: flex;
@@ -16,7 +54,7 @@ export const ProductList = styled.div`
 
     img {
       align-self: center;
-      max-width: 250px;
+      max-width: 150px;
     }
 
     > strong {

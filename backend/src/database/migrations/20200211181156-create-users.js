@@ -9,11 +9,15 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      name: {
+      handle: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      document: {
         type: Sequelize.STRING,
         allowNull: false,
       },

@@ -4,6 +4,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 20px;
 
   img {
     width: 200px;
@@ -22,7 +23,7 @@ export const Container = styled.div`
     a {
       cursor: pointer;
       text-decoration: underline;
-      text-decoration-color: #b894ff;
+      text-decoration-color: #1d4fc3;
       font-weight: bolder;
     }
   }

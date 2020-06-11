@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      document: {
+      /*document: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
-      },
+      },*/
       phone: {
         type: Sequelize.STRING,
         allowNull: false,

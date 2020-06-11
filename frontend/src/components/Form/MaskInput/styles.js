@@ -33,7 +33,7 @@ export const Label = styled.label`
   flex-direction: column;
 
   strong {
-    color: #444;
+    color: ${colors.label};
     font-weight: bold;
 
     text-align: left;

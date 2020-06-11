@@ -5,12 +5,24 @@ import File from '../models/File';
 
 class UserController {
   async store(req, res) {
-    const userExists = await User.findOne({ where: { email: req.body.email } });
+    const emailExists = await User.findOne({
+      where: { email: req.body.email },
+    });
+    const handleExists = await User.findOne({
+      where: { handle: req.body.handle },
+    });
+    const documentExists = await User.findOne({
+      where: { document: req.body.document },
+    });
 
-    if (userExists)
-      return res.status(400).json({ error: 'User already exists' });
+    if (emailExists)
+      return res.status(400).json({ error: 'user/email-already-exists' });
+    if (handleExists)
+      return res.status(400).json({ error: 'user/handle-already-exists' });
+    if (documentExists)
+      return res.status(400).json({ error: 'user/document-already-exists' });
 
-    const { id, name, email } = await User.create(req.body);
+    const { id, handle, email, document } = await User.create(req.body);
 
     /*if (provider) {
       await Cache.invalidate('providers');
@@ -18,9 +30,34 @@ class UserController {
 
     return res.json({
       id,
-      name,
+      handle,
       email,
+      document,
     });
+  }
+
+  async show(req, res) {
+    const { value } = req.query;
+
+    let isAvailable;
+    switch (req.path) {
+      case '/users/handle':
+        isAvailable = await User.findOne({ where: { handle: value } });
+        break;
+      case '/users/email':
+        isAvailable = await User.findOne({ where: { email: value } });
+        break;
+      case '/users/document':
+        isAvailable = await User.findOne({ where: { document: value } });
+        break;
+      default:
+        break;
+    }
+
+    if (isAvailable) {
+      return res.json({ isAvailable: false });
+    }
+    return res.json({ isAvailable: true });
   }
 
   async update(req, res) {
@@ -41,7 +78,7 @@ class UserController {
 
     await user.update(req.body);
 
-    const { id, name, avatar } = await User.findByPk(req.userId, {
+    const { id, handle, avatar } = await User.findByPk(req.userId, {
       include: [
         {
           model: File,
@@ -53,7 +90,7 @@ class UserController {
 
     return res.json({
       id,
-      name,
+      handle,
       email,
       avatar,
     });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { Link } from 'react-router-dom';
 import { MdVisibility, MdCancel, MdPrint } from 'react-icons/md';
 
 import { toast } from 'react-toastify';
@@ -56,7 +56,9 @@ export default function Cart() {
                   src={voucher?.company?.user?.avatar?.url}
                   alt={voucher?.company?.name}
                 /> */}
-                  <strong>{voucher?.company?.name}</strong>
+                  <Link to={`/empresas/${voucher?.company?.user?.handle}`}>
+                    <strong>{voucher?.company?.name}</strong>
+                  </Link>
                 </td>
 
                 <td>
@@ -72,7 +74,7 @@ export default function Cart() {
                     </span>
                     {formatPrice(
                       //voucher.price + (voucher.price - voucher.discount)
-                      voucher?.value + voucher?.bonus
+                      voucher?.value * (1 + voucher?.bonus / 100)
                     )}
                   </span>
                 </td>
@@ -85,9 +87,12 @@ export default function Cart() {
                         fontSize: '14px',
                       }}
                     >
-                      {voucher?.month.substring(0, 1)}%
+                      {voucher?.bonus}%
                     </span>
-                    {formatPrice(voucher?.bonus)}
+                    {formatPrice(
+                      voucher?.value * (1 + voucher?.bonus / 100) -
+                        voucher?.value
+                    )}
                   </span>
                 </td>
                 <td>

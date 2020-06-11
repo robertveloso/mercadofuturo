@@ -9,8 +9,8 @@ class Client extends Model {
       {
         first_name: Sequelize.STRING,
         last_name: Sequelize.STRING,
-        document: Sequelize.STRING,
-        email: Sequelize.STRING,
+        // document: Sequelize.STRING,
+        // email: Sequelize.STRING,
         phone: Sequelize.STRING,
       },
       {

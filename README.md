@@ -21,3 +21,19 @@ sudo apt-get install gcc g++ build-essential gdb
 
 yarn
 yarn start
+
+# docker
+
+## frontend
+
+### dev
+
+docker build -t mercadofuturo:dev .
+docker run -v \${PWD}:/app -v /app/node_modules -p 3001:3000 --rm mercadofuturo:dev
+docker-compose up -d --build
+
+### prod
+
+docker build -f Dockerfile-prod -t mercadofuturo:prod .
+docker run -it -p 8080:80 --rm mercadofuturo:prod
+docker-compose -f docker-compose-prod.yml up -d --build

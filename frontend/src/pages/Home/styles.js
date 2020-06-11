@@ -6,10 +6,10 @@ import bgImage from '../../assets/images/bg.png';
 import homeBanner from '../../assets/images/home-banner.svg';
 
 export const HomeContainer = styled.div`
-  /*background: url(${bgImage}) center top no-repeat;
+  background: url(${bgImage}) center top no-repeat;
   width: 100%;
-  height: 96vh;
-  background-size: contain;*/
+  height: 700px;
+  background-size: contain;
   & section {
     justify-content: center;
     margin: 0 auto;

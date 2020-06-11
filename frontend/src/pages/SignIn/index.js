@@ -9,7 +9,9 @@ import { SimpleButton } from '../../components/Button';
 import { SimpleInput } from '../../components/Form';
 import { signInRequest } from '../../store/modules/auth/actions';
 
-// import { Container } from './styles';
+import { Container, Section } from '../../styles/dstyles';
+
+import { SignInContainer } from './styles';
 
 export default function SingIn() {
   const dispatch = useDispatch();
@@ -20,37 +22,43 @@ export default function SingIn() {
   }
 
   return (
-    <>
-      {/* <img src={logo} alt="Mercado Futuro" /> */}
+    <Container>
+      <SignInContainer>
+        <Section>
+          <div className="row">
+            {/* <img src={logo} alt="Mercado Futuro" /> */}
 
-      <Form
-        onSubmit={handleSubmit}
-        style={{
-          width: 'fit-content',
-          minWidth: '600px',
-          margin: '0 auto',
-          textAlign: 'center',
-        }}
-      >
-        <SimpleInput
-          name="email"
-          label="SEU E-MAIL"
-          type="email"
-          placeholder="exemplo@email.com"
-        />
-        <SimpleInput
-          name="password"
-          label="SUA SENHA"
-          type="password"
-          placeholder="*************"
-        />
+            <Form
+              onSubmit={handleSubmit}
+              style={{
+                width: 'fit-content',
+                minWidth: '600px',
+                margin: '0 auto',
+                textAlign: 'center',
+              }}
+            >
+              <SimpleInput
+                name="email"
+                label="SEU E-MAIL"
+                type="email"
+                placeholder="exemplo@email.com"
+              />
+              <SimpleInput
+                name="password"
+                label="SUA SENHA"
+                type="password"
+                placeholder="*************"
+              />
 
-        <SimpleButton type="submit">
-          {loading ? 'Carregando...' : 'Acessar'}
-        </SimpleButton>
-        <br />
-        {/* <Link to="/signup">Não tenho uma conta ainda...</Link> */}
-      </Form>
-    </>
+              <SimpleButton type="submit">
+                {loading ? 'Carregando...' : 'Acessar'}
+              </SimpleButton>
+              <br />
+              <Link to="/cadastrar">Não tenho uma conta ainda...</Link>
+            </Form>
+          </div>
+        </Section>
+      </SignInContainer>
+    </Container>
   );
 }

@@ -6,8 +6,9 @@ module.exports = {
       'users',
       [
         {
-          name: 'robertveloso',
+          handle: 'robertveloso',
           email: 'robertluizveloso@gmail.com',
+          document: '12775086667',
           password_hash: bcrypt.hashSync('12345678', 8),
           avatar_id: 2,
           created_at: new Date(),

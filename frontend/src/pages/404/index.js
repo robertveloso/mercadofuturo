@@ -12,7 +12,7 @@ export default function Error() {
       <img src={img404} alt="Error 404" />
       <h1>Você está perdido.</h1>
       <h2>
-        Volte para <a onClick={() => history.goBack()}>casa</a>
+        Volte para <a onClick={() => history.push('/')}>casa</a>
       </h2>
     </Container>
   );

@@ -8,7 +8,7 @@ export const BackButton = styled.div`
   font-size: 2rem;
   width: 100%;
   svg {
-    color: #fff;
+    color: ${colors.primary};
   }
   a {
     text-decoration: none;
@@ -34,7 +34,7 @@ export const CompanyDetailsTop = styled.div`
 `;
 
 export const CompanyDetailsTitle = styled.h1`
-  color: #fff;
+  color: ${colors.primary};
   font-size: 2rem;
   font-weight: bold;
   margin: 0;

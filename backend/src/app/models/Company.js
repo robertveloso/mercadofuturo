@@ -8,11 +8,11 @@ class Company extends Model {
     super.init(
       {
         name: Sequelize.STRING,
-        email: Sequelize.STRING,
-        slug: Sequelize.STRING,
+        // document: Sequelize.STRING,
+        // email: Sequelize.STRING,
+        // slug: Sequelize.STRING,
         description: Sequelize.STRING,
         address: Sequelize.STRING,
-        address_map: Sequelize.STRING,
         site: Sequelize.STRING,
         phone: Sequelize.STRING,
       },

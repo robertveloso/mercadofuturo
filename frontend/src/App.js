@@ -8,7 +8,7 @@ import './config/ReactotronConfig';
 
 import GlobalStyle from './styles/global';
 // import Header from './components/Header3';
-import Footer from './components/Footer';
+// import Footer from './components/Footer';
 //import Routes from './routes';
 import Routes from './routes/index';
 

@@ -12,8 +12,8 @@ module.exports = {
         {
           first_name: 'Robert',
           last_name: 'Luiz Veloso',
-          document: '127.750.866-67',
-          email: 'robertluizveloso@gmail.com',
+          // document: '12775086667',
+          // email: 'robertluizveloso@gmail.com',
           phone: '+5538999880075',
           user_id: 2,
           created_at: new Date(),

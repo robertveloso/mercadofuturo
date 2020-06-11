@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
 
 import bgImage from '../assets/images/bg.png';
-//import background from '../assets/images/background.svg';
+// import bgImage from '../assets/images/background.svg';
 // background: #ECF4FF url(${background}) no-repeat center top;
 // background: #191920
 export default createGlobalStyle`
@@ -17,8 +17,13 @@ export default createGlobalStyle`
   }
 
   body {
-    background: #ECF4FF url(${bgImage}) no-repeat center top -200px;
-    background-size: contain;
+    /*background: rgb(28,52,106);
+    background: -moz-linear-gradient(150deg, rgba(28,52,106,1) 0%, rgba(22,64,158,1) 32%, rgba(28,76,188,1) 66%);
+    background: -webkit-linear-gradient(150deg, rgba(28,52,106,1) 0%, rgba(22,64,158,1) 32%, rgba(28,76,188,1) 66%);
+    background: linear-gradient(150deg, rgba(28,52,106,1) 0%, rgba(22,64,158,1) 32%, rgba(28,76,188,1) 66%);
+    background: url(${bgImage}) center top no-repeat;
+    background-size: contain;*/
+    background: #ebebeb;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -30,10 +35,9 @@ export default createGlobalStyle`
 
   #root {
     height: 100%;
-    min-height: 700px; /* check alternative */
-    max-width: 1020px;
     margin: 0 auto;
-    padding: 0 20px 50px;
+    /*max-width: 1020px;
+    padding: 0 20px 50px;*/
   }
 
   .fade.modal.show {

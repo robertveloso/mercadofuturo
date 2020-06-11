@@ -1,0 +1,15 @@
+{
+  "name": "mercadofuturo",
+  "version": "1.0.0",
+  "author": {
+    "name": "Robert Veloso",
+    "email": "robertluizveloso@gmail.com"
+  },
+  "scripts": {
+    "backend": "cd backend && yarn start",
+    "frontend": "cd frontend && yarn start",
+    "start": "npm-run-all --sequential  backend frontend",
+    "build": "cd backend && yarn build && cd ../frontend && yarn build && cd .. && ./build.sh",
+    "deploy": "./deploy.sh"
+  }
+}

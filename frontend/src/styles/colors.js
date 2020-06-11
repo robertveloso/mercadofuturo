@@ -2,6 +2,7 @@ export const colors = {
   primary: '#1d4fc3',
   danger: '#DE3B3B',
   info: '#4D85EE',
+  label: '#1d4fc3',
 };
 
 export const statusColors = {

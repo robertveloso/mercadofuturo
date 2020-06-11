@@ -11,11 +11,11 @@ module.exports = {
       [
         {
           name: 'Mercado do Zé', // faker.name.findName()',
-          email: 'mercadodoze@gmail.com',
-          slug: 'mercado-do-ze',
+          // email: 'mercadodoze@gmail.com',
+          // slug: 'mercado-do-ze',
+          // document: '000000000000000',
           description: faker.lorem.lines(2),
           address: faker.address.streetAddress(),
-          address_map: 'asdsa',
           site: faker.internet.domainName(),
           phone: faker.phone.phoneNumber(),
           user_id: 1,

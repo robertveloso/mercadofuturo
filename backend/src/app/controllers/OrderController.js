@@ -1,55 +1,43 @@
 import { Op } from 'sequelize';
 import Order from '../models/Order';
-// import Delivery from '../models/Delivery';
-import Delivery from '../models/Client';
+import User from '../models/User';
+import Client from '../models/Client';
 
 class OrderController {
   async store(req, res) {
-    const { value, client_id } = req.body;
+    const { value, user_id } = req.body;
+
+    const user = await User.findByPk(user_id);
+    const client = await Client.findOne({ where: { user_id } });
 
     const { id, reference } = await Order.create({
       value,
-      client_id,
+      client_id: client.id,
       status: 'PENDENTE',
     });
-
-    const client = await Delivery.findByPk(client_id);
 
     return res.json({
       id,
       reference,
       value,
       client,
+      user,
     });
   }
 
   async update(req, res) {
     const { id } = req.params;
 
-    const recipient = await Recipient.findByPk(id);
+    const order = await Order.findByPk(id);
 
-    if (!recipient) {
-      return res.status(400).json({ error: 'Recipient does not exists' });
+    if (!order) {
+      return res.status(400).json({ error: 'Order does not exists' });
     }
 
-    const {
-      name,
-      street,
-      number,
-      complement,
-      state,
-      city,
-      zip_code,
-    } = req.body;
-
-    await recipient.update({
-      name,
-      street,
-      number,
-      complement,
-      state,
-      city,
-      zip_code,
+    const { payment_url } = req.body;
+    console.log('peter', payment_url);
+    await order.update({
+      payment_url,
     });
 
     return res.json({});
@@ -126,7 +114,7 @@ class OrderController {
       return res.status(400).json({ error: 'Recipient does not exists' });
     }
 
-    const deliveries = await Delivery.findOne({
+    const deliveries = await Client.findOne({
       where: {
         recipient_id: recipient.id,
         signature_id: null,

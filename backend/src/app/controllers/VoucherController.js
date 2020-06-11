@@ -13,20 +13,20 @@ import Cache from '../../lib/Cache';
 
 class VoucherController {
   async store(req, res) {
-    const { value, bonus, month, order_id, client_id, company_id } = req.body;
+    const { value, bonus, month, order_id, user_id, company_id } = req.body;
 
-    const response = await CreateVoucherService.run({
+    const client = await Client.findOne({ where: { user_id } });
+    const order = await Order.findByPk(order_id);
+    const company = await Company.findByPk(company_id);
+
+    await CreateVoucherService.run({
       value,
       bonus,
       month,
       order_id,
-      client_id,
+      client_id: client.id,
       company_id,
     });
-
-    const order = await Order.findByPk(order_id);
-    const client = await Client.findByPk(client_id);
-    const company = await Company.findByPk(company_id);
 
     return res.json({ value, order, client, company });
   }
@@ -35,7 +35,7 @@ class VoucherController {
     const { id } = req.params;
 
     const voucher = await Voucher.findByPk(id, {
-      attributes: ['id', 'reference', 'value', 'confirmation_code'],
+      attributes: ['id', 'value', 'confirmation_code'],
       include: [
         {
           model: Client,
@@ -90,7 +90,14 @@ class VoucherController {
           model: Company,
           as: 'company',
           paranoid: false,
-          attributes: ['id', 'name', 'slug'],
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: User,
+              as: 'user',
+              attributes: ['id', 'handle'],
+            },
+          ],
         },
       ],
     });

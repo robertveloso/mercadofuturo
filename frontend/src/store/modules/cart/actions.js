@@ -1,11 +1,10 @@
-export function addToCartRequest(id, month, price, discount, donate) {
+export function addToCartRequest(id, date, bonus, price) {
   return {
     type: '@cart/ADD_REQUEST',
     id,
-    month,
+    date,
+    bonus,
     price,
-    discount,
-    donate,
   };
 }
 

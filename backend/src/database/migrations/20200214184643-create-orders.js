@@ -22,6 +22,10 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false,
       },
+      payment_url: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       client_id: {
         // Referência ao cliente
         type: Sequelize.INTEGER,

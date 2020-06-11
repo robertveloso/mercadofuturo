@@ -3,6 +3,15 @@ import React from 'react';
 import { FaShoppingBag, FaChartBar } from 'react-icons/fa';
 
 import {
+  Container,
+  Section,
+  Subsection,
+  Title,
+  Subtitle,
+  Text,
+} from '../../styles/dstyles';
+
+import {
   AboutContainer,
   AboutBanner,
   AboutImage,
@@ -14,14 +23,6 @@ import {
   AboutItemDescriptionList,
   AboutItemDescription,
 } from './styles';
-import {
-  Container,
-  Section,
-  Subsection,
-  Title,
-  Subtitle,
-  Text,
-} from '../../styles/dstyles';
 
 export default function About() {
   return (

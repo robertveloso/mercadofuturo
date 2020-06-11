@@ -10,6 +10,7 @@ import SessionController from './app/controllers/SessionController';
 import CompanyController from './app/controllers/CompanyController';
 import OrderController from './app/controllers/OrderController';
 import VoucherController from './app/controllers/VoucherController';
+import ClientController from './app/controllers/ClientController';
 //import RecipientController from './app/controllers/RecipientController';
 // import DelivererController from './app/controllers/DelivererController';
 import FileController from './app/controllers/FileController';
@@ -72,14 +73,22 @@ routes.post(
 
 routes.post('/files', upload.single('file'), FileController.store); // Upload de arquivos
 
+routes.post('/clients', ClientController.store);
+
+routes.post('/companies', CompanyController.store);
 routes.get('/companies', CompanyController.index);
 routes.get('/companies/:id', CompanyController.show);
+
+routes.get('/users/handle', UserController.show);
+routes.get('/users/email', UserController.show);
+routes.get('/users/document', UserController.show);
 
 routes.use(authMiddleware); // todas as rotas declaradas abaixo, deverão conter o token.
 
 routes.put('/users', validateUserUpdate, UserController.update);
 
 routes.post('/orders', OrderController.store);
+routes.put('/orders/:id', OrderController.update);
 
 routes.post('/vouchers', VoucherController.store);
 routes.get('/vouchers', VoucherController.index);

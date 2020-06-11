@@ -4,10 +4,23 @@ import { Link } from 'react-router-dom';
 import { colors } from '../../styles/colors';
 
 export const Container = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  /*border-bottom: 1px solid #eaeaea;*/
+  height: 90px;
+  transition: all 0.25s ease-in-out;
+  width: -webkit-fill-available;
+  box-sizing: content-box;
+  color: #1d4fc3;
+  z-index: 997;
+
+  background: #1d4fc3;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 50px 0;
+  padding: 0px 100px;
 
   header {
     display: flex;

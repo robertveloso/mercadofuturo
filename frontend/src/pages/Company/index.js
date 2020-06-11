@@ -40,12 +40,6 @@ import {
   InputRange,
   LabelRangeValuesList,
   LabelRangeValue,
-  DonateContainer,
-  DonateTitle,
-  DonateText,
-  DonateValueContainer,
-  DonateValueText,
-  DonateInput,
   InputContainer,
   InputTitle,
   InputText,
@@ -54,6 +48,7 @@ import {
   InputValue,
 } from './styles';
 
+import { colors } from '../../styles/colors';
 import { Container, Section, Text, ButtonOutline } from '../../styles/dstyles';
 
 import api from '../../services/api';
@@ -72,74 +67,72 @@ export default function CompaniesDetails() {
       const data = response.data.map(company => ({
         ...company,
       }));
-      setCompany(data.find(item => item.slug === companySlug));
+      setCompany(data.find(item => item?.user?.handle === companySlug));
     }
     loadProducts();
   }, [companySlug]);
 
   const [show, setShow] = useState(false);
-  const [monthSelected, setMonthSelected] = useState(0);
+  const [monthSelected, setMonthSelected] = useState(1);
+  const [dateSelected, setDateSelected] = useState('');
   const [rangeValue, setRangeValue] = useState(10);
-  const [discountValue, setDiscountValue] = useState(0);
-  const [donateValue, setDonateValue] = useState(0);
-  const minimumDonateValue = 'R$5,00';
-
-  useEffect(() => {
-    setDiscountValue(
-      parseFloat(
-        rangeValue -
-          rangeValue * (monthSelected / 100) -
-          (donateValue >= 5 ? 0.1 : 0)
-      ).toFixed(2)
-    );
-  }, [monthSelected, rangeValue, donateValue]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleChange = (type, value) => {
+  const handleChange = (type, value, date) => {
     if (type === 'month') {
       setMonthSelected(value);
+      setDateSelected(date);
     } else {
       setRangeValue(value);
     }
   };
 
+  const setValue = value => {
+    if (formatPrice(value) >= 10 && formatPrice(value) <= 1000) {
+      setRangeValue(formatPrice(value));
+    } else if (formatPrice(value) < 10) {
+      toast.info('valor reajustado para o mínimo de R$ 10,00');
+      setRangeValue(10);
+    } else if (formatPrice(value) > 1000) {
+      toast.info('valor reajustado para o máximo de R$ 1000,00');
+      setRangeValue(1000);
+    }
+  };
+
   const options = [10, 1000];
+  // 8 months from now.
   const months = [
-    'Maio 2020',
-    'Junho 2020',
-    'Julho 2020',
-    'Agosto 2020',
-    'Setembro 2020',
-    'Outubro 2020',
-    'Novembro 2020',
-    'Dezembro 2020',
+    { reference: '6/2020', label: 'Junho 2020' },
+    { reference: '7/2020', label: 'Julho 2020' },
+    { reference: '8/2020', label: 'Agosto 2020' },
+    { reference: '9/2020', label: 'Setembro 2020' },
+    { reference: '10/2020', label: 'Outubro 2020' },
+    { reference: '11/2020', label: 'Novembro 2020' },
+    { reference: '12/2020', label: 'Dezembro 2020' },
+    { reference: '1/2021', label: 'Janeiro 2021' },
   ];
+
+  const formatPriceEN = price => {
+    return parseFloat(String(price).replace('R$', ''));
+  };
 
   const formatPrice = price => {
     return parseFloat(
-      price
+      String(price)
         .replace('R$', '')
         .replace('.', '')
         .replace(',', '.')
     );
   };
 
-  const handleBlur = value => {
-    if (formatPrice(value) > 0 && formatPrice(value) < 5) {
-      // value = minimumDonateValue;
-      toast.error('Valor mínimo de doação R$5,00.');
-    }
-    setDonateValue(formatPrice(value));
-  };
-
-  const addToCart = (id, month, price, discount, donate) => {
-    if (donateValue > 0 && donateValue < formatPrice(minimumDonateValue)) {
-      toast.error('Valor mínimo de doação R$5,00.');
+  const addToCart = (id, date, bonus, price) => {
+    if (formatPriceEN(price) < 10 || formatPriceEN(price) > 1000) {
+      toast.error('Valor mínimo de R$10,00.');
       return;
     }
-    dispatch(addToCartRequest(id, month, price, discount, donate));
+    dispatch(addToCartRequest(id, date, bonus, price));
     handleClose();
     // call dispatch here
     // setVouchersCount(vouchersCount + 1);
@@ -165,7 +158,7 @@ export default function CompaniesDetails() {
                         href="https://www.facebook.com"
                         title="Acessar Facebook"
                       >
-                        <FaFacebook />
+                        <FaFacebook color={colors.primary} />
                       </a>
                     </CompanyDetailsSocialNetworksItem>
                     <CompanyDetailsSocialNetworksItem>
@@ -173,12 +166,12 @@ export default function CompaniesDetails() {
                         href="https://www.instagram.com"
                         title="Acessar Instagram"
                       >
-                        <FaInstagram />
+                        <FaInstagram color={colors.primary} />
                       </a>
                     </CompanyDetailsSocialNetworksItem>
                     <CompanyDetailsSocialNetworksItem>
                       <a href="https://www.twitter.com" title="Acessar Twitter">
-                        <FaTwitterSquare />
+                        <FaTwitterSquare color={colors.primary} />
                       </a>
                     </CompanyDetailsSocialNetworksItem>
                     <CompanyDetailsSocialNetworksItem>
@@ -186,7 +179,7 @@ export default function CompaniesDetails() {
                         href="https://api.whatsapp.com"
                         title="Acessar WhatsApp"
                       >
-                        <FaWhatsapp />
+                        <FaWhatsapp color={colors.primary} />
                       </a>
                     </CompanyDetailsSocialNetworksItem>
                   </CompanyDetailsSocialNetworks>
@@ -221,9 +214,7 @@ export default function CompaniesDetails() {
                   <CompanyDetailsInfosItem>
                     <FaPhone />
                     Telefone:{' '}
-                    <a
-                      href={`tel:+55${company.phone.replace(/([() -])/g, '')}`}
-                    >
+                    <a href={`tel:${company.phone.replace(/([() -])/g, '')}`}>
                       {company.phone}
                     </a>
                   </CompanyDetailsInfosItem>
@@ -243,10 +234,12 @@ export default function CompaniesDetails() {
                 return (
                   <MonthItem
                     className={monthSelected === index + 1 ? 'active' : ''}
-                    onClick={() => handleChange('month', index + 1)}
+                    onClick={() =>
+                      handleChange('month', index + 1, month.reference)
+                    }
                     key={index}
                   >
-                    {month}
+                    {month.label}
                   </MonthItem>
                 );
               })}
@@ -254,9 +247,7 @@ export default function CompaniesDetails() {
             <Bonus>
               <FaGem />
               <Text>Bônus</Text>
-              <Text id="bonusPercentage">{`${parseInt(
-                monthSelected + (donateValue >= 5 ? 1 : 0)
-              )}%`}</Text>
+              <Text id="bonusPercentage">{`${parseInt(monthSelected)}%`}</Text>
               <Text id="bonusTotal">{`Você vai pagar R$${rangeValue} pelo seu voucher de R$${
                 rangeValue
                   ? rangeValue + rangeValue * (monthSelected / 100)
@@ -296,52 +287,19 @@ export default function CompaniesDetails() {
             <InputValue>
               <CurrencyInput
                 prefix="R$"
+                maxLength={6}
+                precision={0}
                 decimalSeparator=","
                 thousandSeparator="."
                 value={rangeValue}
-                onChange={value => {
-                  value > 10
-                    ? setRangeValue(formatPrice(value))
-                    : toast.error('Valor mínimo de R$ 10,00.', {
-                        toastId: 'valor-minimo',
-                      });
-                }}
-                onBlur={ev => handleBlur(ev.target.value)}
+                onChangeEvent={ev => setValue(ev.target.value)}
+                onBlur={ev => setValue(ev.target.value)}
               />
             </InputValue>
           </InputContainer>
-          {/*<DonateContainer>
-            <DonateTitle>Quero doar</DonateTitle>
-            <DonateText>
-              Faça uma doação para ajudar no combate ao Covid-19 e ganhe um
-              bônus extra no seu voucher.
-            </DonateText>
-            <DonateValueContainer>
-              <DonateValueText>Informe o valor para doação:</DonateValueText>
-              <DonateInput>
-                <CurrencyInput
-                  prefix="R$"
-                  decimalSeparator=","
-                  thousandSeparator="."
-                  value={donateValue}
-                  onChange={value => {
-                    setDonateValue(formatPrice(value));
-                  }}
-                  onBlur={ev => handleBlur(ev.target.value)}
-                />
-              </DonateInput>
-            </DonateValueContainer>
-            <Text>Valor mínimo de R$5,00.</Text>
-          </DonateContainer>*/}
           <ButtonOutline
             onClick={() =>
-              addToCart(
-                company.id,
-                monthSelected,
-                rangeValue,
-                discountValue,
-                donateValue
-              )
+              addToCart(company.id, dateSelected, monthSelected, rangeValue)
             }
           >
             <FaShoppingCart /> Adicionar ao carrinho

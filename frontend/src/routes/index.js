@@ -17,10 +17,11 @@ import Route from './Route';
 export default function Routes() {
   return (
     <Switch>
-      <Route path="/" exact component={Home} />
+      <Route path="/" exact component={Home} noShow />
 
-      <Route path="/login" exact component={SignIn} />
-      <Route path="/signup" exact component={SignUp} />
+      <Route path="/login" exact component={SignIn} noShow />
+      <Route path="/cadastrar" exact component={SignUp} noShow />
+      <Route path="/cadastrar/:id" exact component={SignUp} noShow />
       <Route path="/empresas" exact component={Companies} />
       <Route path="/empresas/:companySlug" exact component={Company} />
       <Route path="/sobre" exact component={About} />

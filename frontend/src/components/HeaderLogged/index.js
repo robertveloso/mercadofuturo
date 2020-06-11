@@ -23,26 +23,15 @@ export default function Header() {
   return (
     <>
       <S.Container>
-        <Link to="/">
+        <Link to="/empresas">
           <img src={logo} width={180} alt="Mercado Futuro" />
         </Link>
         <header>
-          <S.Links to="/">
-            <div>
-              <strong>Início</strong>
-            </div>
-          </S.Links>
           <S.Links to="/empresas">
             <div>
               <strong>Empresas</strong>
             </div>
           </S.Links>
-          <S.Links to="/sobre">
-            <div>
-              <strong>Sobre</strong>
-            </div>
-          </S.Links>
-
           <S.Links to="/vouchers">
             <div>
               <strong>Meus vouchers</strong>
@@ -60,7 +49,7 @@ export default function Header() {
 
           <aside>
             <S.Profile>
-              <strong>{profile?.name}</strong>
+              <strong>{profile?.handle}</strong>
               <button type="button" onClick={handleSingOut}>
                 sair do sistema
               </button>

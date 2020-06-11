@@ -7,23 +7,13 @@ import File from '../models/File';
 class CompanyController {
   async index(req, res) {
     const response = await Company.findAll({
-      attributes: [
-        'id',
-        'name',
-        'email',
-        'description',
-        'slug',
-        'site',
-        'address',
-        'address_map',
-        'phone',
-      ],
+      attributes: ['id', 'name', 'description', 'site', 'address', 'phone'],
       order: ['id'],
       include: [
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'avatar_id'],
+          attributes: ['id', 'handle', 'document', 'email', 'avatar_id'],
           include: [
             {
               model: File,
@@ -52,22 +42,12 @@ class CompanyController {
         id: companyId,
       },
       order: ['id'],
-      attributes: [
-        'id',
-        'name',
-        'email',
-        'description',
-        'slug',
-        'site',
-        'address',
-        'address_map',
-        'phone',
-      ],
+      attributes: ['id', 'name', 'description', 'site', 'address', 'phone'],
       include: [
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'avatar_id'],
+          attributes: ['id', 'handle', 'document', 'email', 'avatar_id'],
           include: [
             {
               model: File,
@@ -82,22 +62,14 @@ class CompanyController {
     return res.json(response[0]);
   }
   async store(req, res) {
-    const userExists = await User.findOne({ where: { email: req.body.email } });
-
-    if (userExists)
-      return res.status(400).json({ error: 'User already exists' });
-
-    const { id, name, email } = await User.create(req.body);
+    // const { id, name, email } = await User.create(req.body);
 
     /*if (provider) {
       await Cache.invalidate('providers');
     }*/
-
-    return res.json({
-      id,
-      name,
-      email,
-    });
+    console.log('logging: add company', req.body);
+    const response = await Company.create(req.body);
+    return res.json(response);
   }
 
   async update(req, res) {
@@ -118,7 +90,7 @@ class CompanyController {
 
     await user.update(req.body);
 
-    const { id, name, avatar } = await User.findByPk(req.userId, {
+    const { id, handle, avatar } = await User.findByPk(req.userId, {
       include: [
         {
           model: File,
@@ -130,7 +102,7 @@ class CompanyController {
 
     return res.json({
       id,
-      name,
+      handle,
       email,
       avatar,
     });

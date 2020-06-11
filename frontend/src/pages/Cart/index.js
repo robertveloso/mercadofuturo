@@ -5,10 +5,13 @@ import { MdDelete } from 'react-icons/md';
 
 import { toast } from 'react-toastify';
 
-import { formatPrice, sleep } from '../../util/format';
+import { formatPrice } from '../../util/format';
 import { removeFromCart, clearCart } from '../../store/modules/cart/actions';
+import { store } from '../../store';
 
 import api, { picpay } from '../../services/api';
+
+import noMedia from '../../assets/images/no_photography-black-48dp.svg';
 
 import { Container, ProductTable, Total } from './styles';
 
@@ -22,8 +25,7 @@ export default function Cart() {
   const totalDiscount = useSelector(state =>
     state.cart.reduce(
       (sumTotal, voucher) =>
-        sumTotal +
-        (voucher.price + (voucher.price - voucher.discount)) * voucher.amount,
+        sumTotal + voucher.price * (1 + voucher.bonus / 100) * voucher.amount,
       0
     )
   );
@@ -40,7 +42,7 @@ export default function Cart() {
       // Create Order
       const order = await api.post('/orders', {
         value: total,
-        client_id: 1,
+        user_id: store.getState().auth.user_id,
       });
       console.log(order);
       // Create Vouchers
@@ -49,13 +51,11 @@ export default function Cart() {
           {
             const response = await api.post('/vouchers', {
               value: voucher.price,
-              bonus: parseFloat(voucher.price - voucher.discount).toPrecision(
-                12
-              ),
-              month: `${voucher.month}/2020`,
+              bonus: voucher.bonus,
+              month: voucher.date,
               order_id: order.data.id,
-              client_id: 1,
-              company_id: 1,
+              user_id: store.getState().auth.user_id,
+              company_id: voucher.company_id,
             });
             console.log(response);
           }
@@ -71,17 +71,22 @@ export default function Cart() {
           //returnUrl: `http://www.mercado-futuro.com/cliente/pedido/${order.data.reference}`,
           returnUrl: `http://www.mercado-futuro.com/vouchers`,
           value: order.data.value,
-          expiresAt: '2022-05-01T16:00:00-03:00',
+          expiresAt: '2022-05-01T16:00:00-03:00', // TODO
           buyer: {
             firstName: order.data.client.first_name,
             lastName: order.data.client.last_name,
-            document: order.data.client.document,
-            email: order.data.client.email,
+            document: order.data.user.document,
+            email: order.data.user.email,
             phone: order.data.client.phone,
           },
         });
         console.log(response);
         if (response.data.paymentUrl) {
+          // Update Order with PaymentUrl
+          const orderUpdate = await api.put(`/orders/${order.data.id}`, {
+            payment_url: response.data.paymentUrl,
+          });
+          console.log(orderUpdate);
           toast.success('Você será redirecionado para a página de pagamento.', {
             toastId: 'redirect-picpay',
             autoClose: 2000,
@@ -120,7 +125,11 @@ export default function Cart() {
           {cart.map(voucher => (
             <tr>
               <td>
-                <img src={voucher?.user?.avatar?.url} alt={voucher.title} />
+                {voucher?.user?.avatar?.url ? (
+                  <img src={voucher?.user?.avatar?.url} alt={voucher.title} />
+                ) : (
+                  <img src={noMedia} alt={'Sem foto'} width={100} />
+                )}
                 <strong>{voucher.name}</strong>
               </td>
 
@@ -135,9 +144,7 @@ export default function Cart() {
                   >
                     {formatPrice(voucher.price)}
                   </span>
-                  {formatPrice(
-                    voucher.price + (voucher.price - voucher.discount)
-                  )}
+                  {formatPrice(voucher.price * (1 + voucher.bonus / 100))}
                 </span>
               </td>
 
@@ -149,13 +156,15 @@ export default function Cart() {
                       fontSize: '14px',
                     }}
                   >
-                    {voucher.month}%
+                    {voucher.bonus}%
                   </span>
-                  {formatPrice(voucher.price - voucher.discount)}
+                  {formatPrice(
+                    voucher.price * (1 + voucher.bonus / 100) - voucher.price
+                  )}
                 </span>
               </td>
               <td>
-                <span>{voucher.month}/2020</span>
+                <span>{voucher.date}</span>
               </td>
 
               <td>

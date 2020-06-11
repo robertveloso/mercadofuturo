@@ -7,10 +7,11 @@ import aboutBanner from '../../assets/images/about-banner.svg';
 import aboutImage from '../../assets/images/about.svg';
 
 export const AboutContainer = styled.div`
-  /*background: url(${bgImage}) center top no-repeat;
+  background: url(${bgImage}) center top no-repeat;
   width: 100%;
-  height: 96vh;
-  background-size: contain;*/
+  height: 700px;
+  background-size: contain;
+
   & section {
     justify-content: center;
     margin: 0 auto;

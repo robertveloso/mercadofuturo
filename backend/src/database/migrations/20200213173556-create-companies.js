@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      /*document: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       email: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -21,16 +25,12 @@ module.exports = {
       slug: {
         type: Sequelize.STRING,
         allowNull: false,
-      },
+      },*/
       description: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       address: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      address_map: {
         type: Sequelize.STRING,
         allowNull: false,
       },

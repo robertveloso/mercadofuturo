@@ -34,7 +34,11 @@ class App {
     this.server.use(Sentry.Handlers.requestHandler());
 
     this.server.use(helmet());
-    this.server.use(cors({ origin: 'https://www.mercado-futuro.com' })); // cors({ origin:'http://my-frontend-url.com' })
+    if (process.env.NODE_ENV !== 'development') {
+      this.server.use(cors({ origin: 'https://www.mercado-futuro.com' }));
+    } else {
+      this.server.use(cors({ origin: 'http://localhost:3000' }));
+    }
 
     this.server.use(express.json());
     this.server.use(
